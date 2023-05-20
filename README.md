@@ -34,7 +34,7 @@ Remember to run these commands within your Git repository.
 
 ## Contributing
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue on the [GitHub repository](https://github.com/your-username/commit-assistant/issues). If you'd like to contribute code, feel free to fork the repository and submit a pull request.
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue on the [GitHub repository](https://github.com/DestinedCodes/commit-assistant). If you'd like to contribute code, feel free to fork the repository and submit a pull request.
 
 Please make sure to follow the project's code of conduct and licensing terms.
 
