@@ -31,16 +31,7 @@ if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     fi
 fi
 
-# Check if there are any changes in the remote repository
-remote_changes=$(git fetch && git rev-list HEAD..origin/master --count)
-if [ $remote_changes -gt 0 ]; then
-    read -p "There are $remote_changes remote change(s). Do you want to pull the changes? (y/n): " pull_changes
-    if [ "$pull_changes" == "y" ]; then
-        git pull origin master
-    fi
-fi
-
-# Prompt for user input
+#Prompt for user input
 read -p "Enter commit message: " message
 echo
 
