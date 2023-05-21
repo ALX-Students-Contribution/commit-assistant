@@ -8,37 +8,36 @@ if ! sudo cp commit /usr/local/bin/; then
     exit 1
 fi
 
-# Ask if the user will like to enter other details or will like to continue with the system configuration
+# Prompt for Git username
+read -p "Enter Git username: " username
 
-read -p "Do you want to enter your details(y/n): " detail_choice
-
-if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
-	# Prompt for Git username
-	read -p "Enter Git username: " username
-
-	# Validate that the username is not empty
-	if [[ -z "$username" ]]; then
-		echo "Error: Git username cannot be empty"
-		exit 1
-	fi
-
-	# Prompt for Git email
-	read -p "Enter Git email: " email
-
-	# Validate that the email is not empty
-	if [[ -z "$email" ]]; then
-		echo "Error: Git email cannot be empty"
-		exit 1
-	fi
-else
-	username=$(git config --get user.name)
-	email=$(git config --get user.email)
+# Validate that the username is not empty
+if [[ -z "$username" ]]; then
+    echo "Error: Git username cannot be empty"
+    exit 1
 fi
 
-# Add the credentials to a seperate file which will be used for future references
+# Prompt for Git email
+read -p "Enter Git email: " email
 
-echo "user_username: $username" > ~/.commitconfig
-echo "user_email: $email" >> ~/.commitconfig
+# Validate that the email is not empty
+if [[ -z "$email" ]]; then
+    echo "Error: Git email cannot be empty"
+    exit 1
+fi
+
+echo
+
+# Replace <user.name> and <user.email> in commit.sh with the provided values
+if ! sudo sed -i "s/<user.name>/$username/g" /usr/local/bin/commit; then
+    echo "Error: Failed to replace username in commit script"
+    exit 1
+fi
+
+if ! sudo sed -i "s/<user.email>/$email/g" /usr/local/bin/commit; then
+    echo "Error: Failed to replace email in commit script"
+    exit 1
+fi
 
 sudo chmod 755 /usr/local/bin/commit
 echo "Installation completed successfully"
