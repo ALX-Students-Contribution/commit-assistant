@@ -27,7 +27,7 @@ fi
 
 # Check if the current directory is a Git repository
 if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    read -p "The current directory is not a Git repository. Would you like to initialize it? (y/n): " initialize
+    read -rp "The current directory is not a Git repository. Would you like to initialize it? (y/n): " initialize
     if [ "$initialize" == "y" ]; then
         git init
     else
@@ -37,7 +37,7 @@ if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
 fi
 
 #Prompt for user input
-read -p "Enter commit message: " message
+read -rp "Enter commit message: " message
 echo
 
 # Validate that the commit message is not empty
