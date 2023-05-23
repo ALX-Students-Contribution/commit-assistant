@@ -10,11 +10,11 @@ fi
 
 # Ask if the user will like to enter other details or will like to continue with the system configuration
 
-read -p "Do you want to enter your details(y/n): " detail_choice
+read -rp "Do you want to enter your details(y/n): " detail_choice
 
 if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
 	# Prompt for Git username
-	read -p "Enter Git username: " username
+	read -rp "Enter Git username: " username
 
 	# Validate that the username is not empty
 	if [[ -z "$username" ]]; then
@@ -23,7 +23,7 @@ if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
 	fi
 
 	# Prompt for Git email
-	read -p "Enter Git email: " email
+	read -rp "Enter Git email: " email
 
 	# Validate that the email is not empty
 	if [[ -z "$email" ]]; then
