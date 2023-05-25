@@ -162,6 +162,11 @@ else
 fi
 echo
 
+# Set upstream to be done automatically by git incase the user
+# opened a new branch and wants to push the branch
+
+git config --local --add --bool push.autoSetupRemote true
+
 # Push the changes to the remote repository
 if [[ -n "$verbose_flag" ]]; then
     # Display push output when verbose flag is used
