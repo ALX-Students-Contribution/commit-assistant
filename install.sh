@@ -8,6 +8,11 @@ if ! sudo cp commit /usr/local/bin/; then
     exit 1
 fi
 
+# Create a validation regex that will be used to validate if the email is correct or not
+# This only checks for the syntax and not deliverability
+
+regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
 # Ask if the user will like to enter other details or will like to continue with the system configuration
 
 read -rp "Do you want to enter your details(y/n): " detail_choice
@@ -26,8 +31,8 @@ if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
 	read -rp "Enter Git email: " email
 
 	# Validate that the email is not empty
-	if [[ -z "$email" ]]; then
-		echo "Error: Git email cannot be empty"
+	if [[ -z "$email" || ! $email =~ $regex ]]; then
+		echo "Error: Your email is either invalid or empty"
 		exit 1
 	fi
 else
@@ -40,6 +45,6 @@ fi
 echo "user_username: $username" > ~/.commitconfig
 echo "user_email: $email" >> ~/.commitconfig
 
-sudo chmod 755 /usr/local/bin/commit
+sudo chmod +x /usr/local/bin/commit
 echo "Installation completed successfully"
 
