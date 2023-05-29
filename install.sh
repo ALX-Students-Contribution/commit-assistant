@@ -31,8 +31,14 @@ if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
 	read -rp "Enter Git email: " email
 
 	# Validate that the email is not empty
-	if [[ -z "$email" || ! $email =~ $regex ]]; then
-		echo "Error: Your email is either invalid or empty"
+	if [[ -z "$email" ]]; then
+		echo "Error: Your email is empty"
+		exit 1
+	fi
+
+	# Validate the email is correct
+	if [[ ! $email =~ $regex ]]; then
+		echo "Error: Your email is invalid"
 		exit 1
 	fi
 else
