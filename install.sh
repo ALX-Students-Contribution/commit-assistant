@@ -8,6 +8,21 @@ if ! sudo cp commit /usr/local/bin/; then
     exit 1
 fi
 
+# Check if git is installed in the system
+
+if ! command -v git > /dev/null 2>&1; then
+	echo -e "Git is not installed in your system \n Do you want to install it? (y/n): "
+
+	read -r git_choice
+
+	if [[ $git_choice == 'y' || $git_choice == 'Y' ]]; then
+		chmod +x git_install.sh
+	else
+		echo "Script terminated. Please install git to continue."
+		exit 1
+	fi
+fi
+
 # Create a validation regex that will be used to validate if the email is correct or not
 # This only checks for the syntax and not deliverability
 
