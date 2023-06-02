@@ -20,6 +20,8 @@ function findOsType () {
 	fi
 }
 
+findOsType
+
 # Find the distribution of the Linux system
 
 function linux_FindDistro(){
@@ -55,4 +57,10 @@ if [ $osType == "Linux" ]; then
 	if [ $linux_distro == 'slitaz' ]; then
 		tazpkg get-install git
 
+fi
+
+
+if [ $osType == 'Unkown' ]; then
+	echo "Your OS is not supported. Please install git manually."
+	exit 1
 fi

@@ -17,6 +17,7 @@ if ! command -v git > /dev/null 2>&1; then
 
 	if [[ $git_choice == 'y' || $git_choice == 'Y' ]]; then
 		chmod +x git_install.sh
+		./git_install.sh
 	else
 		echo "Script terminated. Please install git to continue."
 		exit 1
