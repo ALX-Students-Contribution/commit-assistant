@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -16,6 +16,7 @@ if ! command -v git > /dev/null 2>&1; then
 	read -r git_choice
 
 	if [[ $git_choice == 'y' || $git_choice == 'Y' ]]; then
+		echo "This process may take *alot* of time, please be patient and make sure you have stable internet connection"
 		chmod +x git_install.sh
 		./git_install.sh
 	else
