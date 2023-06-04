@@ -41,12 +41,13 @@ function FindDiff(){
 
 # Install git on the Linux system
 
-# wget https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz
-
 make_git() {
 
 		# List the comands to be installed for the script to run
-		commands='curl jq wget tar make'
+		commands='curl, wget, tar, make, jq'
+
+		# Set the delimeter to be used in seperating the commands
+		IFS=', '
 
 		# Loop over the commands and install each of them if unavailable
 		for install_command in $commands; do
