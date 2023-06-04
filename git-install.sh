@@ -44,7 +44,7 @@ function FindDiff(){
 make_git() {
 
 		# List the comands to be installed for the script to run
-		commands='curl, wget, tar, make, jq'
+		commands='curl, wget, tar, make, jq, sed'
 
 		# Set the delimeter to be used in seperating the commands
 		IFS=', '
@@ -67,14 +67,16 @@ make_git() {
 		git_version=$(curl "https://api.github.com/repos/git/git/tags" -s | jq -r '.[0].name')
 
 		# Download the latest "git tag"
-		wget https://github.com/git/git/archive/refs/tags/$git_version.tar.gz
-
+		if ! test -f "$git_version.tar.gz"; then
+			wget https://github.com/git/git/archive/refs/tags/$git_version.tar.gz -O $git_version.tar.gz
+		fi
 
 		# Unarchive the file for use in the installation
 		tar -xf $git_version.tar.gz
 
 		# Switch to the git folder
-		cd $git_version
+		git_folder=$(echo $git_version | sed -e s/v/git-/)
+		cd $git_folder
 
 		# This is a "faster" method of building git, if you prefer you can do a progile build
 		# Building profile takes a lot of time so I won't attempt to do it here
