@@ -1,12 +1,12 @@
 #/bin/sh
 
-git_version=$(curl "https://api.github.com/repos/git/git/tags" -s | jq -r '.[0].name')
 github_repo="https://github.com/git/git"
 
 # Find the OS type and store it in a variable
-# Some of the installations are nearly the same in different OS
+# Some of the installations are nearly the same in different OS'es
 # If you spot any, please combine to reduce redundancy
-function findOsType () {
+findOsType () {
+
 	if [ $OSTYPE == "linux-gnu" ]; then
 		osType="Linux"
 	elif [ $OSTYPE == "darwin"* ]; then
@@ -24,6 +24,7 @@ function findOsType () {
 		echo "Head over to $github_repo for installation"
 		exit 1
 	fi
+
 }
 
 findOsType
@@ -31,36 +32,45 @@ findOsType
 # Find the distribution of the Linux system
 
 function FindDiff(){
+
 	if [ $osType == "Linux" ]; then
 		linux_distro=$(cat /etc/*-release 2> /dev/null | grep -oP '^ID_LIKE=\K.*' | tr '[[:upper:]]' '[[:lower:]]' )
 	fi
+
 }
 
 # Install git on the Linux system
 
-wget https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz
+# wget https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz
 
-function make_git() {
-		# Check if wget is installed, if not install it
-		if ! command -v wget 2>&1; then
-			$1 install wget
-		fi
+make_git() {
+
+		# List the comands to be installed for the script to run
+		commands='curl jq wget tar make'
+
+		# Loop over the commands and install each of them if unavailable
+		for install_command in $commands; do
+
+			if ! command -v $install_command > /dev/null 2>&1; then
+				sudo $1 install $install_command
+
+				if [ $? -ne 0 ]; then
+					echo "Could not install $install_command, please install it manually"
+					exit 1
+				fi
+
+			fi
+
+		done
+
+		git_version=$(curl "https://api.github.com/repos/git/git/tags" -s | jq -r '.[0].name')
 
 		# Download the latest "git tag"
 		wget https://github.com/git/git/archive/refs/tags/$git_version.tar.gz
 
-		# Check if tar is available
-		if ! command -v tar 2>&1; then
-			$1 install tar
-		fi
 
 		# Unarchive the file for use in the installation
 		tar -xf $git_version.tar.gz
-
-		# Check if make is available
-		if ! command -v make 2>&1; then
-			$1 install make
-		fi
 
 		# Switch to the git folder
 		cd $git_version
@@ -75,16 +85,15 @@ function make_git() {
 
 if [ $osType == "Linux" ]; then
 	FindDiff
-	if [ $linux_distro == "debian" || $linux_distro == "ubuntu" ]; then
-		make_git apt
-
+	if [[ $linux_distro == "debian" || $linux_distro == "ubuntu" ]]; then
+		make_git apt-get
 	elif [ $linux_distro == "fedora" ]; then
 		if command -v dnf > /dev/null 2>&1; then
 			make_git dnf
 		else
 			make_git yum
 		fi
-	elif [ $linux_distro == "arch" || $linux_distro == "arch linux" ]; then
+	elif [[ $linux_distro == "arch" || $linux_distro == "arch linux" ]]; then
 		make_git pacman
 	elif [ $linux_distro == "gentoo" ]; then
 		make_git emerge
@@ -101,6 +110,7 @@ if [ $osType == "Linux" ]; then
 		if [ $? -ne 0 ]; then
 			echo "Could not install git, head over to $github_repo for installation"
 			exit 1
+		fi
 	fi
 
 fi
