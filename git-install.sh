@@ -68,7 +68,7 @@ make_git() {
 
 		# Download the latest "git tag"
 		if ! test -f "$git_version.tar.gz"; then
-			wget https://github.com/git/git/archive/refs/tags/$git_version.tar.gz -O $git_version.tar.gz
+			wget https://github.com/git/git/archive/refs/tags/$git_version.tar.gz
 		fi
 
 		# Unarchive the file for use in the installation
