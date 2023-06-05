@@ -80,9 +80,9 @@ make_git() {
 
 		# This is a "faster" method of building git, if you prefer you can do a progile build
 		# Building profile takes a lot of time so I won't attempt to do it here
-
-		make prefix=/usr all doc info
-		sudo make prefix=/usr install install-doc install-html install-info
+		# Make them to usr/local/ for convenience instead of /usr/ because of distro upgrades
+		make prefix=/usr/local all doc info
+		sudo make prefix=/usr/local install install-doc install-html install-info
 
 }
 
