@@ -2,8 +2,8 @@
 
 # Make the credentials available at the start of the script
 
-username=$(grep -oP '^user_email:\s*\K.*' ~/.commitconfig)
-email=$(grep -oP '^user_username:\s*\K.*' ~/.commitconfig)
+email=$(grep -oP '^user_email:\s*\K.*' ~/.commitconfig)
+username=$(grep -oP '^user_username:\s*\K.*' ~/.commitconfig)
 
 # Check if the --help flag is used
 if [[ "$*" == *"--help"* ]]; then

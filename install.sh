@@ -2,10 +2,26 @@
 
 set -e
 
+y_regex="^([y|Y][eE][sS]|[y|Y])$"
+
+echo "This script is to be run only once, if it is run again, every configuration will be erased"
+read -rp "Do you want to proceed(n/Y): " inst_choice
+
+if [[ ! "$inst_choice" =~ $y_regex ]]; then
+	echo "Abort"
+	exit 1
+fi
+
 # Copy commit.sh to the bin directory
 if ! sudo cp commit /usr/local/bin/; then
     echo "Error: Failed to copy commit script to /usr/local/bin/"
     exit 1
+fi
+
+# Copy the commit manual to relevant places
+# If it doesn't install, don't deter other things from installing
+if ! sudo cp commit.1 /usr/local/man/man1; then
+	echo "Couldn't install then man pages"
 fi
 
 # Check if git is installed in the system
@@ -33,8 +49,8 @@ email_regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 # Ask if the user will like to enter other details or will like to continue with the system configuration
 
 read -rp "Do you want to enter your details(y/n): " detail_choice
-echo -e "\n"
-if [[ $detail_choice =~ ^([y|Y][eE][sS]|[y|Y])$ ]]; then
+
+if [[ "$detail_choice" =~ $y_regex ]]; then
 	# Prompt for Git username
 	read -rp "Enter Git username: " username
 

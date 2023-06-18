@@ -1,0 +1,55 @@
+.TH "COMMIT ASSISTANT" 1 "2023-06-18" GNU "Commit Manual"
+.SH NAME
+commit assistant \- effortlessly commit
+.SH SYNOPSIS
+.B commit
+.RB [ \-\-verbose ]
+.RB [ filename... ]
+.SH DESCRIPTION
+.B commit
+is a tool that helps you commit without having to remember any of the git commands.
+.br
+It intelligently chooses the correct
+.IR "git command"
+to use for your current situation.
+.br
+.B commit
+uses the git commands under the hood to perform it's tasks.
+.br
+.SH OPTIONS
+.TP 8
+.B \-\-verbose
+Prints out the steps that the program is taking.
+This is useful incase the process failed for whatever reason.
+.TP 8
+.B file(s)
+State explicitly which files should be committed.
+If nothing is given, all the files in the current directory are committed.
+.SH EXAMPLE
+.TP 4
+.B commit --verbose
+.br
+Runs the program in verbose mode.
+.TP 4
+.B commit file1 file2
+.br
+Commit certain files.
+.B commit
+takes 0 or more values. If zero, then all the files are selected.
+.SH FILES
+.IR /usr/local
+.br
+.IR /usr/local/bin/
+.br
+.IR ~/.commitconfig
+.SH SEE ALSO
+.BR git(1)
+.SH BUGS
+When run in root it may have undefined behaviours
+.br
+No support for any advanced or intermediate git commands
+.br
+If you find any problem, want to add or a feature added.
+.br
+Consider checking out the official Github repository
+https://github.com/ALX-student-contributions/commit-assistant
