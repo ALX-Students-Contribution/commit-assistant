@@ -2,3 +2,4 @@
 git-2.*/*
 .editorconfig
 build/*
+test*

@@ -1,6 +1,0 @@
-sed: no input files
-git
-git
-git
-git
-git
