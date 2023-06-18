@@ -28,7 +28,7 @@ fi
 # Check if the current directory is a Git repository
 if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     read -rp "The current directory is not a Git repository. Would you like to initialize it? (y/n): " initialize
-    if [ "$initialize" == "y" ]; then
+    if [[ "$initialize" == "y" || "$initialize" == "Y" ]]; then
         git init
     else
         echo "Script terminated. Please initialize a Git repository to continue."
@@ -102,7 +102,7 @@ if [ $# -eq 0 ]; then
         fi
     fi
 
-    # Check if any changes were added to the staging area	
+    # Check if any changes were added to the staging area
     staged_files=$(git diff --cached --name-only)
     if [[ -z "$staged_files" ]]; then
         echo "No recent changes have been made to any files"
@@ -161,6 +161,11 @@ else
     echo "Changes committed successfully"
 fi
 echo
+
+# Set upstream to be done automatically by git incase the user
+# opened a new branch and wants to push the branch
+
+git config --local --add --bool push.autoSetupRemote true
 
 # Push the changes to the remote repository
 if [[ -n "$verbose_flag" ]]; then

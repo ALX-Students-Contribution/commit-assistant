@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -7,6 +7,28 @@ if ! sudo cp commit /usr/local/bin/; then
     echo "Error: Failed to copy commit script to /usr/local/bin/"
     exit 1
 fi
+
+# Check if git is installed in the system
+
+if ! command -v git > /dev/null 2>&1; then
+	echo -e "Git is not installed in your system \n Do you want to install it? (y/n): "
+
+	read -r git_choice
+
+	if [[ $git_choice == 'y' || $git_choice == 'Y' ]]; then
+		echo "This process may take *alot* of time, please be patient and make sure you have stable internet connection"
+		chmod +x git_install.sh
+		./git_install.sh
+	else
+		echo "Script terminated. Please install git to continue."
+		exit 1
+	fi
+fi
+
+# Create a validation regex that will be used to validate if the email is correct or not
+# This only checks for the syntax and not deliverability
+
+regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
 # Ask if the user will like to enter other details or will like to continue with the system configuration
 
@@ -27,7 +49,13 @@ if [[ $detail_choice == 'y' || $detail_choice == 'Y' ]]; then
 
 	# Validate that the email is not empty
 	if [[ -z "$email" ]]; then
-		echo "Error: Git email cannot be empty"
+		echo "Error: Your email is empty"
+		exit 1
+	fi
+
+	# Validate the email is correct
+	if [[ ! $email =~ $regex ]]; then
+		echo "Error: Your email is invalid"
 		exit 1
 	fi
 else
@@ -40,6 +68,6 @@ fi
 echo "user_username: $username" > ~/.commitconfig
 echo "user_email: $email" >> ~/.commitconfig
 
-sudo chmod 755 /usr/local/bin/commit
+sudo chmod +x /usr/local/bin/commit
 echo "Installation completed successfully"
 
