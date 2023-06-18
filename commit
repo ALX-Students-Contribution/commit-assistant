@@ -2,8 +2,10 @@
 
 # Make the credentials available at the start of the script
 
-username=$(grep -oP '^user_email:\s*\K.*' ~/.commitconfig)
-email=$(grep -oP '^user_username:\s*\K.*' ~/.commitconfig)
+y_regex="^([y|Y][eE][sS]|[y|Y])$"
+
+email=$(grep -oP '^user_email:\s*\K.*' ~/.commitconfig)
+username=$(grep -oP '^user_username:\s*\K.*' ~/.commitconfig)
 
 # Check if the --help flag is used
 if [[ "$*" == *"--help"* ]]; then
@@ -28,7 +30,7 @@ fi
 # Check if the current directory is a Git repository
 if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     read -rp "The current directory is not a Git repository. Would you like to initialize it? (y/n): " initialize
-    if [[ "$initialize" == "y" || "$initialize" == "Y" ]]; then
+    if [[ "$initialize" =~ $y_regex ]]; then
         git init
     else
         echo "Script terminated. Please initialize a Git repository to continue."
